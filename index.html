@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS入門-高雄旅遊</title>
+    <link rel="stylesheet" href="scss/all.css">
+</head>
+<body>
+    <div class="container">
+        <div class="wrap">
+            <img src="img/Hero.png" alt="">
+            <h1>高雄旅遊資訊</h1>
+            <select id ="areaId" label="Cats">
+                <option value ="前鎮區" style="display: none" > - -請輸入行政區- -</option>
+                <option value ="前鎮區" data-index="1"> 前鎮區</option>
+                <option value ="苓雅區" data-index="2"> 苓雅區</option>
+                <option value ="三民區" data-index="3"> 三民區</option>
+                <option value ="新興區" data-index="4" > 新興區</option>
+                <option value ="鹽埕區" data-index="5"> 鹽埕區</option>
+                <option value ="美濃區" data-index="6"> 美濃區</option>
+
+            </select>
+            <div class="region">
+                <h3>熱門行政區</h3>
+                <ul class="hot_region_list">
+                
+                </ul>
+                
+            </div>    
+            <img src="img/icons_down.png" alt="" class="down" style="position: relative;">
+        </div>
+        <div class="content">
+            <h2 class="region_display" style="text-align: center; margin-bottom: 20px; margin-top: 20px;"></h2>
+            <ul id="list" style="display: flex; flex-wrap: wrap;justify-content: space-between;padding: 0px 30px;">  </ul>
+            <div class="page">
+                <ul>
+                    <li data-index="0"> < prev </li>
+                    <li data-index="1">1</li>
+                    <li data-index="2">2</li>
+                    <li data-index="3">next ></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer">
+            <p>高雄旅遊網</p>
+            <br>
+            <p style="color: rgba(255,211,102,1)" >資料來源：高雄市政府</p>
+        </div>
+       
+        
+    </div>
+   
+    <script src="js/all.js"></script>
+</body>
+</html>
