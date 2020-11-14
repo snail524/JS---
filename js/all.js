@@ -31,7 +31,6 @@ function updateList_hot_region(){  //  列上熱門行政區
 }
 updateList_hot_region();
 
-
 var len = data.result.records.length;  //讀取景點數目
 
 area.addEventListener('change',updateList,false); //將select清單列出來
