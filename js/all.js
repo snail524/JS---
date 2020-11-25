@@ -4,6 +4,7 @@ var data=
 var area = document.getElementById('areaId'); //選單
 var list = document.getElementById('list'); // 顯示清單
 var hot_region_list = document.querySelector('.wrap .region .hot_region_list')   //四大熱門行政區
+
 var region_display = document.querySelector('.content .region_display')   //顯示所選行政區文字
 var  Page = document.querySelector('.content .page') // 頁碼
  
@@ -21,6 +22,28 @@ var hot_region=[  // 熱門行政區
         city : '鹽埕區'
     }
 ]
+
+
+// 用JS自動新增選單地名
+var zone=[];
+for (i=0 ; i<data.result.records.length;i++){
+    zone.push(data.result.records[i].Zone);  //全部地區
+}
+var result = zone.filter(function(element, index, arr){ //將重複篩選掉
+    return arr.indexOf(element) === index;
+});
+var repeat = zone.filter(function(element, index, arr){
+    return arr.indexOf(element) !== index;
+});
+
+for (i=0; i<result.length;i++){  //輸出
+    area.options.add(new Option(result[i] ,result[i]));
+
+}
+// 用JS自動新增選單地名結束
+
+
+
 function updateList_hot_region(){  //  列上熱門行政區
     var str = '';
     var len = hot_region.length;
@@ -32,6 +55,67 @@ function updateList_hot_region(){  //  列上熱門行政區
 updateList_hot_region();
 
 var len = data.result.records.length;  //讀取景點數目
+initial();
+function initial(){
+    var string = [];
+    localStorage.clear(); 
+    var str ='';
+    var x=0;
+
+    for(var i=0; i<len ; i++){
+    var str='';
+        if(data.result.records[i].Zone == '三民區'){
+            x=x+1;
+            str +=  '<li class='+x+' style="width:464px ;position:relative">'+ '<div class = "img" style ="position:relative;">'+
+            '<img src= '+ data.result.records[i].Picture1 +' style="width:464px;height:155px;object-fit: cover;  display:block" >'+'<h3 style="position: absolute; top:120px;left: 15px;color:white;font-size:24px;line-height:28px ;">'+ data.result.records[i].Name +'</h3>'+'</div>'+'<div class="title">'+ '<img src="img/icons_clock.png">'  + data.result.records[i].Opentime+'<br><br>'+'<img src="img/icons_pin.png" >'+  data.result.records[i].Add+'<br><br>';
+            if (data.result.records[i].Ticketinfo=="")//是免費參觀再加上icon
+            {
+                str+= '<div style="display:flex; justify-content:space-between">'+'<p style="display: inline-block">' +'<img src="img/icons_phone.png" >' + data.result.records[i].Tel+'</p>'+'<p>' 
+                +'</p>'+
+                '</div>'+'</div>'+'</li>';
+            }
+            else{
+                str+= '<div style="display:flex; justify-content:space-between">'+'<p style="display: inline-block">' +'<img src="img/icons_phone.png" >' + data.result.records[i].Tel+'</p>'+'<p>' +'<img src="img/icons_tag.png" >'+
+                data.result.records[i].Ticketinfo+'</p>'+
+                '</div>'+'</div>'+'</li>';
+            }
+            // console.log(i);
+            
+            string.push(str);
+        }
+
+    }
+
+    // string[string.length-1]=string[string.length-1].slice(0,-5);  
+    // string[string.length-1] +='<a href="#up"><img src="img/btn_goTop.png""alt="" style="position:absolute; left:100%;bottom: -2px"> </a></li>';
+    
+ 
+
+    // console.log(string);
+
+    region_display.innerHTML= '<div data-index=1 >'+'三民區' + '</div>';   //  顯示目前所選行政區
+    if (x>6){    //只顯示6筆資料
+        list.innerHTML="";
+        for(var i=0 ;i<6;i++){
+            string[5]=string[5].slice(0,-5);  
+            string[5] +='<a href="#up"><img src="img/btn_goTop.png""alt="" style="position:absolute; left:100%;bottom: -2px"> <a></li>';
+            string[string.length-1]=string[string.length-1].slice(0,-5);  
+            string[string.length-1] +='<a href="#up"><img src="img/btn_goTop.png""alt="" style="position:absolute; left:100%;bottom: -2px"> </a></li>';
+            list.innerHTML +=string[i];
+        }
+    }else{    //不足6筆就全部顯示
+        list.innerHTML="";
+        for(var i=0 ;i<x;i++){
+            string[string.length-1]=string[string.length-1].slice(0,-5);  
+            string[string.length-1] +='<a href="#up"><img src="img/btn_goTop.png""alt="" style="position:absolute; left:100%;bottom: -2px"> </a></li>';
+            list.innerHTML +=string[i];
+        }
+    }
+    localStorage.setItem('listdata' , JSON.stringify(string));
+
+
+}
+
 
 area.addEventListener('change',updateList,false); //將select清單列出來
 function updateList(e){ //將select清單列出來
@@ -45,7 +129,7 @@ function updateList(e){ //將select清單列出來
     var str='';
         if (select == data.result.records[i].Zone){
             x=x+1;
-            str +=  '<li class='+x+' style="width:464px">'+ '<div class = "img" style ="position:relative;">'+
+            str +=  '<li class='+x+' style="width:464px;position:relative">'+ '<div class = "img" style ="position:relative;">'+
             '<img src= '+ data.result.records[i].Picture1 +' style="width:464px;height:155px;object-fit: cover;  display:block" >'+'<h3 style="position: absolute; top:120px;left: 15px;color:white;font-size:24px;line-height:28px ;">'+ data.result.records[i].Name +'</h3>'+'</div>'+'<div class="title">'+ '<img src="img/icons_clock.png">'  + data.result.records[i].Opentime+'<br><br>'+'<img src="img/icons_pin.png" >'+  data.result.records[i].Add+'<br><br>';
             if (data.result.records[i].Ticketinfo=="")//是免費參觀再加上icon
             {
@@ -62,19 +146,26 @@ function updateList(e){ //將select清單列出來
             string.push(str);  //將資料存入string陣列裡
         }
     }
-    localStorage.setItem('listdata' , JSON.stringify(string));  //  將資訊存入localstorage
     region_display.innerHTML= '<div data-index=1 >'+select+'</div>';   //  顯示目前所選行政區
     if (x>6){    //只顯示6筆資料
         list.innerHTML="";
         for(var i=0 ;i<6;i++){
+            string[5]=string[5].slice(0,-5);  
+            string[5] +='<a href="#up"><img src="img/btn_goTop.png""alt="" style="position:absolute; left:100%;bottom: -2px"> <a></li>';
+            string[string.length-1]=string[string.length-1].slice(0,-5);  
+            string[string.length-1] +='<a href="#up"><img src="img/btn_goTop.png""alt="" style="position:absolute; left:100%;bottom: -2px"> </a></li>';
             list.innerHTML +=string[i];
         }
     }else{    //不足6筆就全部顯示
         list.innerHTML="";
         for(var i=0 ;i<x;i++){
+            string[string.length-1]=string[string.length-1].slice(0,-5);  
+            string[string.length-1] +='<a href="#up"><img src="img/btn_goTop.png""alt="" style="position:absolute; left:100%;bottom: -2px"> </a></li>';
             list.innerHTML +=string[i];
         }
     }
+    localStorage.setItem('listdata' , JSON.stringify(string));  //  將資訊存入localstorage
+
 }
 
 hot_region_list.addEventListener('click',checkList_hotregion); //監聽熱門行政區
@@ -90,7 +181,7 @@ function checkList_hotregion(e){  //熱門行政區偵測
     var str2='';
         if (hot_region[str3].city == data.result.records[i].Zone){
             x=x+1;
-            str2 += '<li class='+x+' style="width:464px">'+ '<div class = "img" style ="position:relative;">'+
+            str2 += '<li class='+x+' style="width:464px;position:relative">'+ '<div class = "img" style ="position:relative;">'+
             '<img src= '+ data.result.records[i].Picture1 +' style="width:464px;height:155px;object-fit: cover;  display:block" >'+'<h3 style="position: absolute; top:120px;left: 15px;color:white;font-size:24px;line-height:28px ;">'+ data.result.records[i].Name +'</h3>'+'</div>'+'<div class="title">'+ '<img src="img/icons_clock.png">'  + data.result.records[i].Opentime+'<br><br>'+'<img src="img/icons_pin.png" >'+  data.result.records[i].Add+'<br><br>';
             if (data.result.records[i].Ticketinfo=="")
             {
@@ -107,21 +198,28 @@ function checkList_hotregion(e){  //熱門行政區偵測
         }
         
     }
-    localStorage.setItem('listdata' , JSON.stringify(string));
     region_display.innerHTML= '<div data-index=1 >'+hot_region[str3].city+'</div>';
     if (x>6){   // 只列6個
         list.innerHTML="";
-        console.log(string);
         for(var i=0 ;i<6;i++){
-            list.innerHTML +=string[i];
+        string[5]=string[5].slice(0,-5);  
+        string[5] +='<a href="#up"><img src="img/btn_goTop.png""alt="" style="position:absolute; left:100%;bottom: -2px"> <a></li>';
+        string[string.length-1]=string[string.length-1].slice(0,-5);  
+        string[string.length-1] +='<a href="#up"><img src="img/btn_goTop.png""alt="" style="position:absolute; left:100%;bottom: -2px"> </a></li>';
+        list.innerHTML +=string[i];
+        
         }
     }
-    else{
+    else if(x<=6){
        list.innerHTML="";
        for(var i=0 ;i<x;i++){
-           list.innerHTML +=string[i];
+        string[string.length-1]=string[string.length-1].slice(0,-5);  
+        string[string.length-1] +='<a href="#up"><img src="img/btn_goTop.png""alt="" style="position:absolute; left:100%;bottom: -2px"> </a></li>';
+        list.innerHTML +=string[i];
        }
    }
+   localStorage.setItem('listdata' , JSON.stringify(string));
+
 
 }
 Page.addEventListener('click' , page);
