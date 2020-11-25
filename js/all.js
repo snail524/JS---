@@ -64,11 +64,11 @@ function initial(){
 
     for(var i=0; i<len ; i++){
     var str='';
-        if(data.result.records[i].Zone == '三民區'){
+        if(data.result.records[i].Zone === '三民區'){
             x=x+1;
             str +=  '<li class='+x+' style="width:464px ;position:relative">'+ '<div class = "img" style ="position:relative;">'+
             '<img src= '+ data.result.records[i].Picture1 +' style="width:464px;height:155px;object-fit: cover;  display:block" >'+'<h3 style="position: absolute; top:120px;left: 15px;color:white;font-size:24px;line-height:28px ;">'+ data.result.records[i].Name +'</h3>'+'</div>'+'<div class="title">'+ '<img src="img/icons_clock.png">'  + data.result.records[i].Opentime+'<br><br>'+'<img src="img/icons_pin.png" >'+  data.result.records[i].Add+'<br><br>';
-            if (data.result.records[i].Ticketinfo=="")//是免費參觀再加上icon
+            if (data.result.records[i].Ticketinfo==="")//是免費參觀再加上icon
             {
                 str+= '<div style="display:flex; justify-content:space-between">'+'<p style="display: inline-block">' +'<img src="img/icons_phone.png" >' + data.result.records[i].Tel+'</p>'+'<p>' 
                 +'</p>'+
@@ -127,11 +127,11 @@ function updateList(e){ //將select清單列出來
 
     for(var i=0; i<len ; i++){
     var str='';
-        if (select == data.result.records[i].Zone){
+        if (select === data.result.records[i].Zone){
             x=x+1;
             str +=  '<li class='+x+' style="width:464px;position:relative">'+ '<div class = "img" style ="position:relative;">'+
             '<img src= '+ data.result.records[i].Picture1 +' style="width:464px;height:155px;object-fit: cover;  display:block" >'+'<h3 style="position: absolute; top:120px;left: 15px;color:white;font-size:24px;line-height:28px ;">'+ data.result.records[i].Name +'</h3>'+'</div>'+'<div class="title">'+ '<img src="img/icons_clock.png">'  + data.result.records[i].Opentime+'<br><br>'+'<img src="img/icons_pin.png" >'+  data.result.records[i].Add+'<br><br>';
-            if (data.result.records[i].Ticketinfo=="")//是免費參觀再加上icon
+            if (data.result.records[i].Ticketinfo==="")//是免費參觀再加上icon
             {
                 str+= '<div style="display:flex; justify-content:space-between">'+'<p style="display: inline-block">' +'<img src="img/icons_phone.png" >' + data.result.records[i].Tel+'</p>'+'<p>' 
                 +'</p>'+
@@ -179,11 +179,11 @@ function checkList_hotregion(e){  //熱門行政區偵測
     var x=0;                    //將景點編號
     for(var i=0; i<len ; i++){   //同select清單列出
     var str2='';
-        if (hot_region[str3].city == data.result.records[i].Zone){
+        if (hot_region[str3].city === data.result.records[i].Zone){
             x=x+1;
             str2 += '<li class='+x+' style="width:464px;position:relative">'+ '<div class = "img" style ="position:relative;">'+
             '<img src= '+ data.result.records[i].Picture1 +' style="width:464px;height:155px;object-fit: cover;  display:block" >'+'<h3 style="position: absolute; top:120px;left: 15px;color:white;font-size:24px;line-height:28px ;">'+ data.result.records[i].Name +'</h3>'+'</div>'+'<div class="title">'+ '<img src="img/icons_clock.png">'  + data.result.records[i].Opentime+'<br><br>'+'<img src="img/icons_pin.png" >'+  data.result.records[i].Add+'<br><br>';
-            if (data.result.records[i].Ticketinfo=="")
+            if (data.result.records[i].Ticketinfo==="")
             {
                 str2+= '<div style="display:flex; justify-content:space-between">'+'<p style="display: inline-block">' +'<img src="img/icons_phone.png" >' + data.result.records[i].Tel+'</p>'+'<p>' 
                 +'</p>'+
@@ -229,7 +229,7 @@ function page(e){   //頁碼
     var getData = localStorage.getItem('listdata');
     var getArray = JSON.parse(getData);    //讀出localstorage陣列
     getlen = getArray.length;          
-     if(num2==1){         //第一頁，顯示第一個到第六個
+     if(num2===1){         //第一頁，顯示第一個到第六個
         if(getlen>6){      //清單多於6個就只顯示6個
             list.innerHTML="";
             for(var i=0;i<6;i++){
@@ -242,7 +242,7 @@ function page(e){   //頁碼
             }
         }
     }
-    else if (num2==2){ //第二頁
+    else if (num2===2){ //第二頁
          if (getlen>6){    //清單多餘6個，就全部顯示
              list.innerHTML="";
              for(var i=6 ;i<getlen;i++){
@@ -252,10 +252,10 @@ function page(e){   //頁碼
               list.innerHTML="";
           }
     }   
-    else if (num2 ==3){  //往後一頁
+    else if (num2 ===3){  //往後一頁
         console.log(list.innerHTML[11]);   // 讀旅遊編號x 
         numObject= parseInt(list.innerHTML[11]);
-        if(numObject==1 && getlen > 5){     //清單第一個編號為1，並且陣列長度為6以上
+        if(numObject===1 && getlen > 5){     //清單第一個編號為1，並且陣列長度為6以上
            
             list.innerHTML="";
             
@@ -267,7 +267,7 @@ function page(e){   //頁碼
      else if(num2 ==0){  //前一頁
         numObject= parseInt(list.innerHTML[11]);
         console.log(typeof(numObject));
-        if(numObject==7){
+        if(numObject===7){
             list.innerHTML="";
              for(var i=0 ;i<6;i++){
                  list.innerHTML +=getArray[i];
